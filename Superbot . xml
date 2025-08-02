@@ -1,0 +1,203 @@
+<xml xmlns="https://developers.google.com/blockly/xml" is_dbot="true" collection="false">
+  <variables>
+    <variable id="stake">stake</variable>
+    <variable id="loss_count">loss_count</variable>
+    <variable id="win_count">win_count</variable>
+    <variable id="profit">profit</variable>
+    <variable id="max_loss">max_loss</variable>
+    <variable id="max_profit">max_profit</variable>
+    <variable id="current_martingale">current_martingale</variable>
+    <variable id="last_digits">last_digits</variable>
+    <variable id="minute">minute</variable>
+    <variable id="high_digits">high_digits</variable>
+    <variable id="low_digits">low_digits</variable>
+  </variables>
+
+  <block type="variables_set" id="init1" x="0" y="0">
+    <field name="VAR">stake</field>
+    <value name="VALUE">
+      <block type="math_number">
+        <field name="NUM">0.35</field>
+      </block>
+    </value>
+    <next>
+      <block type="variables_set">
+        <field name="VAR">loss_count</field>
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set">
+            <field name="VAR">win_count</field>
+            <value name="VALUE">
+              <block type="math_number">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set">
+                <field name="VAR">profit</field>
+                <value name="VALUE">
+                  <block type="math_number">
+                    <field name="NUM">0</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="variables_set">
+                    <field name="VAR">max_loss</field>
+                    <value name="VALUE">
+                      <block type="math_number">
+                        <field name="NUM">-5</field>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set">
+                        <field name="VAR">max_profit</field>
+                        <value name="VALUE">
+                          <block type="math_number">
+                            <field name="NUM">3</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="variables_set">
+                            <field name="VAR">current_martingale</field>
+                            <value name="VALUE">
+                              <block type="math_number">
+                                <field name="NUM">0</field>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="time_getter" id="getMinute">
+                                <field name="TIME">minute</field>
+                                <next>
+                                  <block type="controls_if">
+                                    <value name="IF0">
+                                      <block type="logic_and">
+                                        <value name="A">
+                                          <block type="logic_compare">
+                                            <field name="OP">GTE</field>
+                                            <value name="A">
+                                              <block type="variables_get">
+                                                <field name="VAR">minute</field>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="math_number">
+                                                <field name="NUM">10</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <value name="B">
+                                          <block type="logic_compare">
+                                            <field name="OP">LTE</field>
+                                            <value name="A">
+                                              <block type="variables_get">
+                                                <field name="VAR">minute</field>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="math_number">
+                                                <field name="NUM">40</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <statement name="DO0">
+                                      <block type="time_delay" id="delay2s">
+                                        <field name="DELAYTYPE_LIST">s</field>
+                                        <value name="DELAY">
+                                          <block type="math_number">
+                                            <field name="NUM">2</field>
+                                          </block>
+                                        </value>
+                                        <next>
+                                          <block type="purchase" id="buyOver">
+                                            <field name="PURCHASE_LIST">DIGITOVER</field>
+                                            <next>
+                                              <block type="controls_if" id="profit_check">
+                                                <mutation else="1"></mutation>
+                                                <value name="IF0">
+                                                  <block type="logic_or">
+                                                    <value name="A">
+                                                      <block type="logic_compare">
+                                                        <field name="OP">LTE</field>
+                                                        <value name="A">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">profit</field>
+                                                          </block>
+                                                        </value>
+                                                        <value name="B">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">max_loss</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                    <value name="B">
+                                                      <block type="logic_compare">
+                                                        <field name="OP">GTE</field>
+                                                        <value name="A">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">profit</field>
+                                                          </block>
+                                                        </value>
+                                                        <value name="B">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">max_profit</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                  </block>
+                                                </value>
+                                                <statement name="DO0">
+                                                  <block type="text_print">
+                                                    <value name="TEXT">
+                                                      <block type="text_join">
+                                                        <mutation items="2"></mutation>
+                                                        <value name="ADD0">
+                                                          <block type="text">
+                                                            <field name="TEXT">Session ended. Profit: </field>
+                                                          </block>
+                                                        </value>
+                                                        <value name="ADD1">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">profit</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                    </value>
+                                                    <next>
+                                                      <block type="bot_stop"></block>
+                                                    </next>
+                                                  </block>
+                                                </statement>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </statement>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>
